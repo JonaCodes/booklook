@@ -17,47 +17,23 @@
 	</div>
 
 	<script id="bookDisplay-template" type="text/x-handlebars-template">
-		<p> This book will take you	{{ daysToRead }} days to read</p>
+		<!-- <p> This book will take you	{{ daysToRead }} days to read</p> -->
 		<h1>{{ bookTitle}} </h1>
 		<p> {{bookDescr}} </p>
 		<h3>Written by: {{bookAuthor}} </h3>
 		<img src="{{bookImgURL}}"/>
+		
 	</script>		
 
 
-	<h3>Enter Book Info</h3>
+	<h3>Enter ISBN</h3>
   
   	<form id = "#bookInfoForm">
 		<fieldset class="form-group">
-	    	<label for="formBookTitleLabel"></label>
-	    	<input type="text" class="form-control" id="formBookTitleID" placeholder="Book Title"> 
+	    	<label for="formISBN"></label>
+	    	<input type="text" class="form-control" id="formISBNid" placeholder="Enter ISBN"> 
 	    	<i class="fa fa-check"></i>
 	    	<i class="fa fa-times"></i>
-
-	    	<label for="formBookAuthorLabel"></label>
-	    	<input type="text" class="form-control" id="formBookAuthorID" placeholder="Book Author" required = "true">
-	    	<i class="fa fa-check"></i>
-	    	<i class="fa fa-times"></i>
-		
-	    	<label for="formBookDescriptionLabel"></label>
-	    	<input type="text" class="form-control" id="formBookDescriptionID" placeholder="Book Description">
-	    	<i class="fa fa-check"></i>
-	    	<i class="fa fa-times"></i>
-
-	    	<label for="formBookImageURLLabel"></label>
-	    	<input type="text" class="form-control" id="formImageURLID" placeholder="Image URL">
-			<i class="fa fa-check"></i>
-			<i class="fa fa-times"></i>		
-	    	
-	    	<label for="formBookNumPagesLabel"></label>
-	    	<input type="text" class="form-control" id="formNumPagesID" placeholder="Number of Pages">
-			<i class="fa fa-check"></i>
-			<i class="fa fa-times"></i>
-
-	    	<label for="formBookMPDLabel"></label>
-	    	<input type="text" class="form-control" id="formMPDID" placeholder="Minutes You Read per Day">
-			<i class="fa fa-check"></i>
-			<i class="fa fa-times"></i>
 
 		</fieldset>		
 	</form>	

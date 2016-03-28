@@ -1,44 +1,55 @@
 
 
 var formIsValid = false;
-//From HTML
-var bookTitlePlaceholder = "Book Title";
-var bookAuthorPlaceholder = "Book Author";
-var bookDescrPlaceholder = "Book Description";
-var imgURLPlaceholder = "Image URL";
-var numPagesPlaceholder = "Number of Pages";
-var mpdPlaceholder = "Minutes You Read per Day";
 
-//Error messages
-var missingTextMsg = "This field must be filled out"
-var notNumericMsg = "Must be a whole number"
-var badImageTypeMsg = "This is not a valid image URL, please choose a proper link"
+var invalidISBN = "This ISBN is not correct"
 
 //To track the x's and v's in the validation
 var validatedInputs = [];
 var unValidatedInputs = [];
-var validImageExtensions = ["png","tiff","jpg","jpeg","bmp","svg"];
 
 $('#formSubmitBtn').click(function() {
 
-    var bookTitle = $("#formBookTitleID").val();
-    var bookAuthor = $("#formBookAuthorID").val();
-    var bookDescr = $("#formBookDescriptionID").val();
-    var bookImgURL = $("#formImageURLID").val();
-    var bookNumPages = $("#formNumPagesID").val();
-    var bookMPD = $("#formMPDID").val();
-
-    var daysToRead = getDaysToRead(bookNumPages, bookMPD);
-    
-    if(formIsValid){
-	    displayOnHTML(daysToRead, bookTitle, bookDescr, bookAuthor, bookImgURL);
-	    clearForm();
-	    formIsValid = false;
-    }
-    else{
-    	alert("Please correct the errors");
-    }
+  	var isbn = $("#formISBNid").val();
+	var bookInfo = fetch(isbn);    
+	// var title = $("#formISBNid").val();
+	// var bookInfo = fetchWithTitle(title);
+    // if(formIsValid){
+	   //  displayOnHTML(daysToRead, bookTitle, bookDescr, bookAuthor, bookImgURL);
+	   //  clearForm();
+	   //  formIsValid = false;
+    // }
+    // else{
+    // 	//alert("Please correct the errors");
+    // }
 });
+
+function formatTitleForURL(title){
+	var titleWords = title.split(" ");
+	var formattedTitle = "";
+
+	for(var i = 0; i < titleWords.length; i++){
+		formattedTitle += titleWords[i] + "+";
+	}
+	return formattedTitle;
+}
+
+function fetch(isbn) {
+
+  $.ajax({
+    method: "GET",
+    url: 'https://www.googleapis.com/books/v1/volumes?q='+ isbn,
+    dataType: "json",
+    success: function(data) {
+      console.log(data);
+      parse(data);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log("error: " + textStatus);
+    }
+  }); 
+};
+
 
 function clearForm(){
 	$('form').find("input[type=text], textarea").val("");
@@ -49,39 +60,9 @@ function clearForm(){
 //Add/remove x's and v's for validation
 $("input").on("keyup",  function(){
 
-	var placeholder = this.placeholder;	//the placeholder text used as an identifier
 	var input = $(this).val();
 	
-	if(placeholder == bookTitlePlaceholder || placeholder == bookDescrPlaceholder || placeholder == bookAuthorPlaceholder){
-		
-		if(input.length < 1){
-			showError(this, missingTextMsg);
-		}
-		else{
-			showCheck(this);
-		}
-	}
-
-	if(placeholder == mpdPlaceholder || placeholder == numPagesPlaceholder){
-		if(Math.floor(input) == input && $.isNumeric(input)){
-			showCheck(this);
-		}
-		else{
-			showError(this, notNumericMsg);
-		}
-	}
-
-	if(placeholder == imgURLPlaceholder){
-		var afterPeriods = input.split(".");
-		var extension = afterPeriods.pop();
-
-		if(afterPeriods.length > 0 && $.inArray(extension, validImageExtensions) > -1){
-			showCheck(this);
-		}
-		else{
-			showError(this,badImageTypeMsg);
-		}
-	}
+	//Validation
 
 	var numErrors = $('.fa-times-show').length;
 	if(numErrors == 0){
@@ -122,7 +103,16 @@ function showError(input, errorMessage){
 	}
 }
 
-function displayOnHTML(daysToRead, bookTitle, bookDescr, bookAuthor, bookImgURL){
+function parse(data){
+
+	var title = data.items[0].volumeInfo.title;
+	var descr = data.items[0].volumeInfo.description;
+	var author = data.items[0].volumeInfo.authors[0];
+	var imgURL = data.items[0].volumeInfo.imageLinks.thumbnail;
+	displayOnHTML(title, descr, author,imgURL);
+}
+
+function displayOnHTML(bookTitle, bookDescr, bookAuthor, bookImgURL){
 	 $('#result').empty();
 	// turn our "template" into html
 	var source = $('#bookDisplay-template').html();
@@ -131,7 +121,7 @@ function displayOnHTML(daysToRead, bookTitle, bookDescr, bookAuthor, bookImgURL)
 	var template = Handlebars.compile(source);
 
 	// fill our template with information
-	var newHTML = template({daysToRead: daysToRead, bookTitle: bookTitle, bookDescr:bookDescr, bookAuthor: bookAuthor, bookImgURL: bookImgURL});
+	var newHTML = template({bookTitle: bookTitle, bookDescr:bookDescr, bookAuthor: bookAuthor, bookImgURL: bookImgURL});
 
 	// append our new html to the page
 	$('#result').html(newHTML);
