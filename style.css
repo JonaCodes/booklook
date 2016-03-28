@@ -1,0 +1,15 @@
+.fa-check{
+	display: none;
+}
+.fa-check-show{
+	color:#00FF00;
+	display:inline-block;
+}
+
+.fa-times{
+	display:none;
+}
+.fa-times-show{
+	color:red;
+	display:inline-block;
+}

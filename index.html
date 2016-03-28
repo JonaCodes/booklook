@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Jona Booklook</title>
+		
+	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="node_modules/font-awesome/css/font-awesome.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body>
+
+  <div class="container horizontal-center" style = "margin-top:50px">
+	<h1>BookLook <i class="fa fa-eye"></i> </h1>	    
+
+	<div id = "result">
+	</div>
+
+	<script id="bookDisplay-template" type="text/x-handlebars-template">
+		<p> This book will take you	{{ daysToRead }} days to read</p>
+		<h1>{{ bookTitle}} </h1>
+		<p> {{bookDescr}} </p>
+		<h3>Written by: {{bookAuthor}} </h3>
+		<img src="{{bookImgURL}}"/>
+	</script>		
+
+
+	<h3>Enter Book Info</h3>
+  
+  	<form id = "#bookInfoForm">
+		<fieldset class="form-group">
+	    	<label for="formBookTitleLabel"></label>
+	    	<input type="text" class="form-control" id="formBookTitleID" placeholder="Book Title"> 
+	    	<i class="fa fa-check"></i>
+	    	<i class="fa fa-times"></i>
+
+	    	<label for="formBookAuthorLabel"></label>
+	    	<input type="text" class="form-control" id="formBookAuthorID" placeholder="Book Author" required = "true">
+	    	<i class="fa fa-check"></i>
+	    	<i class="fa fa-times"></i>
+		
+	    	<label for="formBookDescriptionLabel"></label>
+	    	<input type="text" class="form-control" id="formBookDescriptionID" placeholder="Book Description">
+	    	<i class="fa fa-check"></i>
+	    	<i class="fa fa-times"></i>
+
+	    	<label for="formBookImageURLLabel"></label>
+	    	<input type="text" class="form-control" id="formImageURLID" placeholder="Image URL">
+			<i class="fa fa-check"></i>
+			<i class="fa fa-times"></i>		
+	    	
+	    	<label for="formBookNumPagesLabel"></label>
+	    	<input type="text" class="form-control" id="formNumPagesID" placeholder="Number of Pages">
+			<i class="fa fa-check"></i>
+			<i class="fa fa-times"></i>
+
+	    	<label for="formBookMPDLabel"></label>
+	    	<input type="text" class="form-control" id="formMPDID" placeholder="Minutes You Read per Day">
+			<i class="fa fa-check"></i>
+			<i class="fa fa-times"></i>
+
+		</fieldset>		
+	</form>	
+	<br>
+	<button id = "formSubmitBtn" type="button" class="btn btn-primary">Submit</button>
+
+  </div>
+
+	<script src="node_modules/handlebars/dist/handlebars.min.js"> </script>
+	<script src="node_modules/jquery/dist/jquery.min.js"> </script>
+	<script type="text/javascript" src="script.js"></script>
+
+</body>
+</html>
