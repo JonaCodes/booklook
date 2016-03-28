@@ -24,16 +24,6 @@ $('#formSubmitBtn').click(function() {
     // }
 });
 
-function formatTitleForURL(title){
-	var titleWords = title.split(" ");
-	var formattedTitle = "";
-
-	for(var i = 0; i < titleWords.length; i++){
-		formattedTitle += titleWords[i] + "+";
-	}
-	return formattedTitle;
-}
-
 function fetch(isbn) {
 
   $.ajax({
@@ -49,6 +39,64 @@ function fetch(isbn) {
     }
   }); 
 };
+
+function parse(data){
+
+	var books = [];
+	for(var i = 0; i < data.items.length; i++){
+		if(i == 10){
+			break;
+		}
+
+		var snippet = "";
+		var image = "";
+
+		if(data.items[i].searchInfo == undefined){
+			snippet = "no snippet";
+		}
+		else{
+			snippet = data.items[i].searchInfo.textSnippet;
+		}
+
+		if(data.items[i].volumeInfo.imageLinks == undefined){
+			image = ".jpg";
+		}
+		else{
+			image = data.items[i].volumeInfo.imageLinks.thumbnail;
+		}
+
+//Works, but need to add author condition and fix formatting; should go in columns
+		var book = {
+			bookTitle: data.items[i].volumeInfo.title,
+			//bookAuthor: data.items[i].volumeInfo.description,
+			bookSnippet: snippet,
+			bookAuthor: "author",//data.items[i].volumeInfo.authors[0],
+			bookImgURL: image
+		}
+		books.push(book);
+	}
+
+	displayOnHTML(books);
+}
+
+function displayOnHTML(books){
+	 
+	 var bookData = {books};
+
+	 $('#result').empty();
+	// turn our "template" into html
+	var source = $('#bookMiniDisplay-template').html();
+
+	// compile our template html using handlebars
+	var template = Handlebars.compile(source);
+
+	// fill our template with information
+	var newHTML = template(bookData);
+	// var newHTML = template({bookTitle: bookTitle, bookDescr:bookDescr, bookAuthor: bookAuthor, bookImgURL: bookImgURL});
+	// var newHTML = template({bookTitle: bookTitle, bookSnippet: bookSnippet, bookAuthor: bookAuthor, bookImgURL: bookImgURL});
+	// append our new html to the page
+	$('#result').html(newHTML);
+}
 
 
 function clearForm(){
@@ -103,31 +151,17 @@ function showError(input, errorMessage){
 	}
 }
 
-function parse(data){
-
-	var title = data.items[0].volumeInfo.title;
-	var descr = data.items[0].volumeInfo.description;
-	var author = data.items[0].volumeInfo.authors[0];
-	var imgURL = data.items[0].volumeInfo.imageLinks.thumbnail;
-	displayOnHTML(title, descr, author,imgURL);
-}
-
-function displayOnHTML(bookTitle, bookDescr, bookAuthor, bookImgURL){
-	 $('#result').empty();
-	// turn our "template" into html
-	var source = $('#bookDisplay-template').html();
-
-	// compile our template html using handlebars
-	var template = Handlebars.compile(source);
-
-	// fill our template with information
-	var newHTML = template({bookTitle: bookTitle, bookDescr:bookDescr, bookAuthor: bookAuthor, bookImgURL: bookImgURL});
-
-	// append our new html to the page
-	$('#result').html(newHTML);
-}
-
 function getDaysToRead(numPages, mpd){
 	//Assume 1 minute = 2 page
 	return daysToRead = (numPages / (mpd*2))
 }
+
+// function formatTitleForURL(title){
+// 	var titleWords = title.split(" ");
+// 	var formattedTitle = "";
+
+// 	for(var i = 0; i < titleWords.length; i++){
+// 		formattedTitle += titleWords[i] + "+";
+// 	}
+// 	return formattedTitle;
+// }

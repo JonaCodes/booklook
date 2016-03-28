@@ -13,8 +13,47 @@
   <div class="container horizontal-center" style = "margin-top:50px">
 	<h1>BookLook <i class="fa fa-eye"></i> </h1>	    
 
+	<h3>Enter Title</h3>
+  
+  	<form id = "#bookInfoForm">
+		<fieldset class="form-group">
+	    	<label for="formISBN"></label>
+	    	<input type="text" class="form-control" id="formISBNid" placeholder="Enter Title"> 
+	    	<i class="fa fa-check"></i>
+	    	<i class="fa fa-times"></i>
+		</fieldset>		
+	</form>	
+
+	<br>
+	<button id = "formSubmitBtn" type="button" class="btn btn-primary">Submit</button>
+
 	<div id = "result">
 	</div>
+
+	<script id="bookMiniDisplay-template" type="text/x-handlebars-template">
+		{{#each books}}
+		<div class = "container">
+			<div class = "row">
+				<div class = "col-md-4">
+					<h4>{{ bookTitle }} </h4>
+					<h5>Written by: {{bookAuthor}} </h5>
+					
+					<div class = "container">
+						<div class = "row">
+							<div class = "col-md-2">
+								<img src="{{bookImgURL}}"/>	
+							</div>
+							<div class = "col-md-2">
+								 <p>{{bookSnippet}}</p>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		{{/each}}
+	</script>		
 
 	<script id="bookDisplay-template" type="text/x-handlebars-template">
 		<!-- <p> This book will take you	{{ daysToRead }} days to read</p> -->
@@ -25,20 +64,6 @@
 		
 	</script>		
 
-
-	<h3>Enter ISBN</h3>
-  
-  	<form id = "#bookInfoForm">
-		<fieldset class="form-group">
-	    	<label for="formISBN"></label>
-	    	<input type="text" class="form-control" id="formISBNid" placeholder="Enter ISBN"> 
-	    	<i class="fa fa-check"></i>
-	    	<i class="fa fa-times"></i>
-
-		</fieldset>		
-	</form>	
-	<br>
-	<button id = "formSubmitBtn" type="button" class="btn btn-primary">Submit</button>
 
   </div>
 
