@@ -1,4 +1,4 @@
-//http://www.patrickrothfuss.com/images/page/cover_277.jpg
+
 
 var formIsValid = false;
 //From HTML
